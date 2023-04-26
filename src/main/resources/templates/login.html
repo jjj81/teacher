@@ -1,0 +1,36 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<head>
+	<style>
+		.login {
+			margin: auto;
+			width: 50%;
+			border: 3px solid #73AD21;
+			padding: 10px;
+		}
+
+	</style>
+</head>
+
+
+<body>
+	<div class="login">
+		<fieldset>
+			<legend>
+				老师登陆页面</legend>
+			<form th:object="${teacherLoginInfo}" method="post" th:action="@{/login/confirm}">
+				<label>工号：</label>
+				<input type="text" maxlength="12" minlength="12" placeholder="工号，输入12位数字" th:field="*{teacherId}" required>
+				<p />
+				<label>密码：</label>
+				<input type="password" placeholder="密码" th:field="*{passWord}" required>
+				<p />
+				<input type="submit" value="登录">
+				<p />
+				<a th:href="@{/register}">没有账号请注册</a>
+			</form>
+		</fieldset>
+	</div>
+</body>
+
+</html>
