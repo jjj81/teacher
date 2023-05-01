@@ -1,0 +1,30 @@
+<html xmlns="http://www.thymeleaf.org">
+<style>
+	table,
+	th,
+	td {
+		border: 1px solid black;
+	}
+
+</style>
+
+<body>
+	<fieldset>
+		<legend>教师个人信息</legend>
+		<table>
+			<tr>
+				<th>教师工号</th>
+				<th>姓名</th>
+				<th>对哪些班级拥有管理权限</th>
+			</tr>
+			<tr>
+				<td><span th:text="${teacherInfo.teacherId}">null</span></td>
+				<td><span th:text="${teacherInfo.teacherName}">null</span></td>
+				<td><span th:text="${teacherInfo.powerToClass}">null</span></td>
+			</tr>
+		</table>
+		<a th:href="@{/personalInfo/getUpdateName/{id}(id=${teacherInfo.teacherId})}">修改姓名</a>
+	</fieldset>
+</body>
+
+</html>

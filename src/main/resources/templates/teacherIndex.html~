@@ -1,0 +1,12 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<body>
+	<h1>教师端主页</h1>
+	<fieldset>
+		<fieldset>
+			<legend>个人信息管理</legend>
+		</fieldset>
+	</fieldset>
+</body>
+
+</html>

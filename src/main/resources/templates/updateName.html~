@@ -1,0 +1,13 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<body>
+	<h1>修改页面</h1>
+	<form action="@{/personalInfo/updateName}" th:object="${teacherInfo}" method="post">
+		<label>修改姓名：</label>
+		<input type="text" th:field="*{teacherName}" required>
+		<p />
+		<input type="submit" value="提交修改">
+	</form>
+</body>
+
+</html>
