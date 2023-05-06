@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -31,6 +32,12 @@ public class LoginController {
 				teacherLoginInfoMapper.searchByTeacherId(teacherLoginInfo.getTeacherId()).getPassWord()) == false)
 			return "passWordError";
 		model.addAttribute("teacherId", teacherLoginInfo.getTeacherId());
+		return "teacherIndex";
+	}
+
+	@GetMapping("/index/{teacherId}")
+	String getTeacherIndexPage(Model model, @PathVariable("teacherId") String teacherId) {
+		model.addAttribute("teacherId", teacherId);
 		return "teacherIndex";
 	}
 }

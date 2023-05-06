@@ -1,10 +1,15 @@
 <html xmlns="http://www.thymeleaf.org">
+
 <body>
-	<h1>教师端主页</h1>
+	<h1>教师主页</h1>
 	<fieldset>
 		<fieldset>
 			<legend>个人信息管理</legend>
 			<a th:href="@{/personalInfo/getPage/{id}(id=${teacherId})}">个人信息修改</a>
+		</fieldset>
+		<fieldset>
+		  <legend>学生管理</legend>
+		  <a th:href="@{/studentInfo/index/{teacherId}(teacherId=${teacherId})}">学生管理页面</a>
 		</fieldset>
 	</fieldset>
 </body>
