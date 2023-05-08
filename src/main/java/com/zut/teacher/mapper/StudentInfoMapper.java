@@ -1,5 +1,6 @@
 package com.zut.teacher.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -18,4 +19,7 @@ public interface StudentInfoMapper {
 
 	@Insert("insert into studentLoginInfo(studentId,passWord,className) values(#{studentId},#{passWord},#{className})")
 	void insertStudentInfo(StudentInfo studentInfo);
+
+	@Delete("delete from studentLoginInfo where studentId=#{studentId}")
+	void deleteStudentByStudentId(String studentId);
 }

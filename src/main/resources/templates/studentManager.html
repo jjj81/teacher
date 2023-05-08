@@ -1,5 +1,6 @@
 <html xmlns="http://www.thymeleaf.org">
 
+
 <body>
 	<h1>学生管理页</h1>
 	<fieldset>
@@ -32,9 +33,10 @@
 			</select>
 			<input type="submit">
 		</form>
-		<form>
+		<form th:action="@{/studentInfo/searchByStudentId/{teacherId}(teacherId=${teacherId})}" th:object="${studentInfo}"
+			method="post">
 			<label>按学号查询:</label>
-			<input type="text" maxlength="12" minlength="12" placeholder="12位数字">
+			<input type="text" maxlength="12" minlength="12" placeholder="12位数字" th:field="*{studentId}" required>
 			<input type="submit">
 		</form>
 		<form th:action="@{/studentInfo/index/{teacherId}(teacherId=${teacherId})}" method="get">
@@ -57,15 +59,18 @@
 				<th>学号</th>
 				<th>姓名</th>
 				<th>班级</th>
+				<th>删除</th>
 			</tr>
 			<tr th:each="student:${studentList}">
 				<td th:text="${student.studentId}">
 				<td>
-					<span th:if="${student.studentName  == null }">学生暂未填写个人姓名</span>
+					<span th:if="${student.studentName  == null }">null</span>
 					<span th:unless="${student.studentName == null }" th:text="${student.studentName}">
 				</td>
-
 				<td th:text="${student.className}">
+				<td>
+					<a th:href="@{/studentInfo/delete(studentId=${student.studentId},teacherId=${teacherId})}">删除</a>
+				</td>
 			</tr>
 		</table>
 	</fieldset>

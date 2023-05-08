@@ -1,11 +1,10 @@
 package com.zut.teacher.controller;
 
-import java.util.List;
-
 import com.zut.teacher.entity.StudentInfo;
 import com.zut.teacher.entity.TeacherPowerToClass;
 import com.zut.teacher.mapper.StudentInfoMapper;
 import com.zut.teacher.mapper.TeacherPowerToClassMapper;
+import com.zut.teacher.service.TeacherInfoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/studentInfo")
@@ -27,32 +27,15 @@ public class StudentInfoController {
 	@Autowired
 	private TeacherPowerToClassMapper teacherPowerToClassMapper;
 
-	List<StudentInfo> searchTeacherCanManagerStudentAll(String teacherId) {
-		List<StudentInfo> result = null;
-		List<TeacherPowerToClass> teacherCanManagerClass = teacherPowerToClassMapper
-				.searchTeacherPowerToClassById(teacherId);
-		for (TeacherPowerToClass teacherPowerToClass : teacherCanManagerClass) {
-			if (result == null)
-				result = studentInfoMapper.searchStudentByClassName(teacherPowerToClass.getClassName());
-			else
-				for (StudentInfo studentInfo : studentInfoMapper
-						.searchStudentByClassName(teacherPowerToClass.getClassName())) {
-					result.add(studentInfo);
-				}
-
-			;
-
-		}
-		return result;
-
-	}
+	@Autowired
+	private TeacherInfoService teacherInfoService;
 
 	@GetMapping("/index/{teacherId}")
 	String studentInfoManagerPage(@PathVariable("teacherId") String teacherId, Model model) {
 		model.addAttribute("teacherId", teacherId);
 		model.addAttribute("studentInfo", new StudentInfo());
 		model.addAttribute("canManageClassList", teacherPowerToClassMapper.searchTeacherPowerToClassById(teacherId));
-		model.addAttribute("studentList", searchTeacherCanManagerStudentAll(teacherId));
+		model.addAttribute("studentList", teacherInfoService.searchTeacherCanManagerStudentAll(teacherId));
 		return "studentManager";
 	}
 
@@ -68,7 +51,7 @@ public class StudentInfoController {
 		model.addAttribute("teacherId", teacherId);
 		model.addAttribute("studentInfo", new StudentInfo());
 		model.addAttribute("canManageClassList", teacherPowerToClassMapper.searchTeacherPowerToClassById(teacherId));
-		model.addAttribute("studentList", searchTeacherCanManagerStudentAll(teacherId));
+		model.addAttribute("studentList", teacherInfoService.searchTeacherCanManagerStudentAll(teacherId));
 
 		return "studentManager";
 	}
@@ -81,6 +64,51 @@ public class StudentInfoController {
 		model.addAttribute("studentInfo", new StudentInfo());
 		model.addAttribute("canManageClassList", teacherPowerToClassMapper.searchTeacherPowerToClassById(teacherId));
 		model.addAttribute("studentList", studentInfoMapper.searchStudentByClassName(studentInfo.getClassName()));
+
+		return "studentManager";
+	}
+
+	@PostMapping("/searchByStudentId/{teacherId}")
+	String searchStudentByStudentId(final StudentInfo studentInfo, Model model,
+			@PathVariable("teacherId") String teacherId) {
+
+		if (studentInfoMapper.searchStudentByStudentId(studentInfo.getStudentId()) == null) {
+
+			model.addAttribute("teacherId", teacherId);
+			return "studentNotExist";
+		}
+
+		int flag = 0;
+		for (TeacherPowerToClass teacherPowerToClass : teacherPowerToClassMapper
+				.searchTeacherPowerToClassById(teacherId)) {
+
+			if (studentInfoMapper.searchStudentByStudentId(studentInfo.getStudentId())
+					.getClassName().equals(teacherPowerToClass.getClassName()) == true)
+				flag = 1;
+		}
+		if (flag == 0) {
+			model.addAttribute("teacherId", teacherId);
+			return "noPower";
+		} else {
+
+			model.addAttribute("teacherId", teacherId);
+			model.addAttribute("studentInfo", new StudentInfo());
+			model.addAttribute("canManageClassList",
+					teacherPowerToClassMapper.searchTeacherPowerToClassById(teacherId));
+			model.addAttribute("studentList", studentInfoMapper.searchStudentByStudentId(studentInfo.getStudentId()));
+			return "studentManager";
+		}
+	}
+
+	@GetMapping("/delete")
+	String deleteStudentByStudentId(@RequestParam("studentId") String studentId,
+			@RequestParam("teacherId") String teacherId, Model model) {
+
+		studentInfoMapper.deleteStudentByStudentId(studentId);
+		model.addAttribute("teacherId", teacherId);
+		model.addAttribute("studentInfo", new StudentInfo());
+		model.addAttribute("canManageClassList", teacherPowerToClassMapper.searchTeacherPowerToClassById(teacherId));
+		model.addAttribute("studentList", teacherInfoService.searchTeacherCanManagerStudentAll(teacherId));
 
 		return "studentManager";
 	}

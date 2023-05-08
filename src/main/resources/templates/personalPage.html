@@ -1,30 +1,104 @@
 <html xmlns="http://www.thymeleaf.org">
-<style>
-	table,
-	th,
-	td {
-		border: 1px solid black;
-	}
 
-</style>
 
 <body>
+	<h1>教师个人信息页</h1>
 	<fieldset>
 		<legend>教师个人信息</legend>
 		<table>
 			<tr>
 				<th>教师工号</th>
 				<th>姓名</th>
-				<th>对哪些班级拥有管理权限</th>
+				<th>留言申请班级管理权限</th>
 			</tr>
 			<tr>
-				<td><span th:text="${teacherInfo.teacherId}">null</span></td>
-				<td><span th:text="${teacherInfo.teacherName}">null</span></td>
-				<td><span th:text="${teacherInfo.powerToClass}">null</span></td>
+				<td th:text="${teacherInfo.teacherId}">
+				<td>
+					<span th:if="${teacherInfo.teacherName == null}">null</span>
+					<span th:unless="${teacherInfo.teacherName == null}" th:text="${teacherInfo.teacherName}">
+				</td>
+				<td>
+					<span th:if="${teacherInfo.wantToManageClass == null}">null</span>
+					<span th:unless="${teacherInfo.wantToManageClass == null}" th:text="${teacherInfo.wantToManageClass}">
+				</td>
 			</tr>
 		</table>
-		<a th:href="@{/personalInfo/getUpdateName/{id}(id=${teacherInfo.teacherId})}">修改姓名</a>
 	</fieldset>
+	<fieldset>
+		<legend>
+			修改姓名
+		</legend>
+		<form th:action="@{/personalInfo/updateName/{teacherId}(teacherId=${teacherId})}" th:object="${teacherInfo}"
+			method="post">
+			<label>请输入修改名:</label>
+			<input type="text" placeholder="修改姓名" th:field="*{teacherName}" required>
+			<p />
+			<input type="submit" value="提交">
+		</form>
+	</fieldset>
+	<fieldset>
+		<legend>
+			修改申请留言
+		</legend>
+		<form th:action="@{/personalInfo/updateLeaveMessage/{teacherId}(teacherId=${teacherId})}" th:object="${teacherInfo}"
+			method="post">
+			<label>修改留言:</label>
+			<p />
+			<textarea rows="4" cols="25" th:field="${teacherInfo.wantToManageClass}" >
+	</textarea>
+			<p />
+			<input type="submit" value="修改">
+
+		</form>
+	</fieldset>
+	<fieldset>
+		<legend>
+			班级信息
+		</legend>
+		<table>
+			<tr>
+				<th>管理员添加的所有班级</th>
+			</tr>
+			<tr th:each="class:${allClassList}">
+				<td th:text="${class}">
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<th>您拥有管理权限的班级</th>
+			</tr>
+			<tr th:each="canManageClass:${canManagerClassList}">
+				<td th:text="${canManageClass.className}">
+			</tr>
+		</table>
+	</fieldset>
+	<fieldset>
+		<legend>
+			修改个人密码
+		</legend>
+		<form th:action="@{/personalInfo/updatePassWord/{teacherId}(teacherId=${teacherId})}" th:object="${teacherInfo}"
+			method="post" onsubmit="return matchPassWord()">
+			<label>新密码:</label>
+			<input id="pass1" type="password" th:field="*{passWord}" placeholder="新密码" required>
+			<p />
+			<label>确认密码:</label>
+			<input id="pass2" type="password" placeholder="确认密码" required>
+			<p />
+			<input type="submit" value="修改">
+		</form>
+	</fieldset>
+	<script>
+		function matchPassWord() {
+			var pw1 = document.getElementById("pass1").value;
+			var pw2 = document.getElementById("pass2").value;
+			if (pw1 != pw2) {
+				alert("密码不匹配");
+				return false;
+			}
+			return ok;
+		}
+	</script>
+	<a th:href="@{/index/{teacherId}(teacherId=${teacherId})}">返回主页</a>
 </body>
 
 </html>

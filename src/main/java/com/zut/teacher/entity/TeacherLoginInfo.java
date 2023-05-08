@@ -4,7 +4,7 @@ public class TeacherLoginInfo {
 	private String teacherId;
 	private String passWord;
 	private String teacherName;
-	private String powerToClass;
+	private String wantToManageClass;
 
 	public String getPassWord() {
 		return passWord;
@@ -30,12 +30,12 @@ public class TeacherLoginInfo {
 		this.teacherName = teacherName;
 	}
 
-	public String getPowerToClass() {
-		return powerToClass;
+	public String getWantToManageClass() {
+		return wantToManageClass;
 	}
 
-	public void setPowerToClass(String powerToClass) {
-		this.powerToClass = powerToClass;
+	public void setWantToManageClass(String wantToManageClass) {
+		this.wantToManageClass = wantToManageClass;
 	}
 
 }

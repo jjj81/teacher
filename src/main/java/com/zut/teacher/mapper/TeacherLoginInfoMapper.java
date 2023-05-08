@@ -1,5 +1,7 @@
 package com.zut.teacher.mapper;
 
+import java.util.List;
+
 import com.zut.teacher.entity.TeacherLoginInfo;
 
 import org.apache.ibatis.annotations.Insert;
@@ -16,6 +18,16 @@ public interface TeacherLoginInfoMapper {
 	TeacherLoginInfo searchByTeacherId(String id);
 
 	@Update("update teacherLoginInfo set teacherName=#{teacherName} where teacherId=#{teacherId}")
-	void updateTeacherNameByTeacherId(TeacherLoginInfo teacherInfo);
+	void updateTeacherNameByTeacherId(String teacherId, String teacherName);
+
+	@Update("update teacherLoginInfo set passWord=#{passWord} where teacherId=#{teacherId}")
+	void updatePassWord(String passWord, String teacherId);
+
+	@Update("update teacherLoginInfo set wantToManageClass=#{leaveMessage} where teacherId=#{teacherId}")
+	void updateLeaveMessageByTeacherId(String teacherId, String leaveMessage);
+
+	// diff
+	@Select("select * from classes")
+	List<String> selectAllClass();
 
 }

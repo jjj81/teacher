@@ -1,7 +1,7 @@
 <html xmlns="http://www.thymeleaf.org">
 
 <body>
-	<h1>该学号在数据库中已有实例，请勿重复添加</h1>
+	<h1>您所查的学号在数据库中没有学生与其匹配</h1>
 	<p />
 	<a th:href="@{/studentInfo/index/{teacherId}(teacherId=${teacherId})}">返回</a>
 </body>
