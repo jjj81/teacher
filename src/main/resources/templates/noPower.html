@@ -1,9 +1,7 @@
 <html xmlns="http://www.thymeleaf.org">
 
 <body>
-	<h1>
-		该学生所在的班级您没有管理权限，如想管理该学生，请向管理员申请
-	</h1>
+	<h1>该学生所在的班级您没有管理权限，如想管理该学生，请向管理员申请</h1>
 	<p />
 	<a  th:href="@{/studentInfo/index/{teacherId}(teacherId=${teacherId})}">返回</a>
 </body>

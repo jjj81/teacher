@@ -11,6 +11,10 @@
 			<legend>学生管理</legend>
 			<a th:href="@{/studentInfo/index/{teacherId}(teacherId=${teacherId})}">学生管理页面</a>
 		</fieldset>
+		<fieldset>
+			<legend>学生刷题情况</legend>
+			<a th:href="@{/doExerciseInfo/{teacherId}(teacherId=${teacherId})}">学生刷题情况</a>
+		</fieldset>
 	</fieldset>
 </body>
 

@@ -9,9 +9,11 @@ public class StudentDoExerciseInfo {
 	private Integer solveExerciseNumber;
 	private Date doExerciseStartTime;
 	private Date doExerciseEndTime;
-	private byte[] doExercisePhoto1;
-	private byte[] doExercisePhoto2;
-	private byte[] doExercisePhoto3;
+	private String doExercisePhoto1;
+	private String doExercisePhoto2;
+	private String doExercisePhoto3;
+	private String doExercisePhoto4;
+	private String doExercisePhoto5;
 
 	public String getDoExerciseWebSiteUrl() {
 		return doExerciseWebSiteUrl;
@@ -53,36 +55,52 @@ public class StudentDoExerciseInfo {
 		this.doExerciseEndTime = doExerciseEndTime;
 	}
 
-	public byte[] getDoExercisePhoto1() {
-		return doExercisePhoto1;
-	}
-
-	public void setDoExercisePhoto1(byte[] doExercisePhoto1) {
-		this.doExercisePhoto1 = doExercisePhoto1;
-	}
-
-	public byte[] getDoExercisePhoto2() {
-		return doExercisePhoto2;
-	}
-
-	public void setDoExercisePhoto2(byte[] doExercisePhoto2) {
-		this.doExercisePhoto2 = doExercisePhoto2;
-	}
-
-	public byte[] getDoExercisePhoto3() {
-		return doExercisePhoto3;
-	}
-
-	public void setDoExercisePhoto3(byte[] doExercisePhoto3) {
-		this.doExercisePhoto3 = doExercisePhoto3;
+	public void setStudentId(String studentId) {
+		StudentId = studentId;
 	}
 
 	public String getStudentId() {
 		return StudentId;
 	}
 
-	public void setStudentId(String studentId) {
-		StudentId = studentId;
+	public String getDoExercisePhoto1() {
+		return doExercisePhoto1;
+	}
+
+	public void setDoExercisePhoto1(String doExercisePhoto1) {
+		this.doExercisePhoto1 = doExercisePhoto1;
+	}
+
+	public String getDoExercisePhoto2() {
+		return doExercisePhoto2;
+	}
+
+	public void setDoExercisePhoto2(String doExercisePhoto2) {
+		this.doExercisePhoto2 = doExercisePhoto2;
+	}
+
+	public String getDoExercisePhoto3() {
+		return doExercisePhoto3;
+	}
+
+	public void setDoExercisePhoto3(String doExercisePhoto3) {
+		this.doExercisePhoto3 = doExercisePhoto3;
+	}
+
+	public String getDoExercisePhoto4() {
+		return doExercisePhoto4;
+	}
+
+	public void setDoExercisePhoto4(String doExercisePhoto4) {
+		this.doExercisePhoto4 = doExercisePhoto4;
+	}
+
+	public String getDoExercisePhoto5() {
+		return doExercisePhoto5;
+	}
+
+	public void setDoExercisePhoto5(String doExercisePhoto5) {
+		this.doExercisePhoto5 = doExercisePhoto5;
 	}
 
 }

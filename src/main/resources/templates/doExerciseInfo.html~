@@ -1,0 +1,48 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<body>
+	<h1>查询学生刷题情况</h1>
+	<fieldset>
+		<table>
+			<thead>
+				<tr>
+					<th>学号</th>
+					<th>刷题网站</th>
+					<th>刷题网站账号</th>
+					<th>解题数量</th>
+					<th>开始刷题日期</th>
+					<th>结束日期</th>
+					<th>查看刷题情况截图</th>
+					<th>学生刷题情况审核</th>
+					<th>按刷题数排序</th>
+				</tr>
+				<tr th:each="info:${searchAllList}">
+					<td><span th:text="${info.studentId}">null</span></td>
+					<td><a th:href="@{'https://'+${info.doExerciseWebSiteUrl}}" th:text="${info.doExerciseWebSiteUrl}"></a></td>
+					<td><span th:text="${info.doExerciseWebSiteAccount}">null</span></td>
+					<td><span th:text="${info.solveExerciseNumber}">null</span></td>
+					<td><span th:text="${info.doExerciseStartTime}">null</span></td>
+					<td><span th:text="${info.doExerciseEndTime}">null</span></td>
+					<td><a>查看</a></td>
+					<td>
+						<select>
+							<option th:value="0">
+								未审核
+							</option>
+							<option th:value="1">
+								审核通过
+							</option>
+							<option th:value="3">
+								审核不通过
+							</option>
+						</select>
+					</td>
+					<td><a th:href="@{/doExerciseInfo/searchAllOrderBySolveExerciseNumber}">排序</a></td>
+				</tr>
+			</thead>
+		</table>
+	</fieldset>
+	<a th:href="@{/index/{teacherId}(teacherId=${teacherId})}">返回主页</a>
+</body>
+
+</html>

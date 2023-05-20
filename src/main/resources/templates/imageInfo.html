@@ -1,0 +1,25 @@
+<html xmlns="http:/www.thymeleaf.org">
+
+<body>
+	<h1>网站刷题情况截图</h1>
+	<fieldset>
+		<label>图1</label>
+		<img th:src="'data:image/png;base64,'+${photo1}" />
+		<p />
+		<label>图2</label>
+		<img th:src="'data:image/png;base64,'+${photo2}" />
+		<p />
+		<label>图3</label>
+		<img th:src="'data:image/png;base64,'+${photo3}" />
+		<p />
+		<label>图4</label>
+		<img th:src="'data:image/png;base64,'+${photo4}" />
+		<p />
+		<label>图5</label>
+		<img th:src="'data:image/png;base64,'+${photo5}" />
+		<p />
+	</fieldset>
+	<a th:href="@{/doExerciseInfo/{studentId}(studentId=${studentId})}">返回</a>
+</body>
+
+</html>

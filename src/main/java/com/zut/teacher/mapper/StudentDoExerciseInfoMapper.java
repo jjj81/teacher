@@ -14,4 +14,7 @@ public interface StudentDoExerciseInfoMapper {
 	@Select("select * from studentDoExerciseInfo order by solveExerciseNumber")
 	List<StudentDoExerciseInfo> searchAllOrderBySolveExerciseNumber();
 
+	@Select("select * from studentDoExerciseInfo where doExerciseWebSiteUrl=#{url} and doExerciseWebSiteAccount=#{account}")
+	StudentDoExerciseInfo selectDoExerciseByUrlAndAccount(String url, String account);
+
 }

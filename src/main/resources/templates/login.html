@@ -9,15 +9,21 @@
 			padding: 10px;
 		}
 
+		.error {
+			color: red;
+		}
+
 	</style>
 </head>
-
 
 <body>
 	<div class="login">
 		<fieldset>
-			<legend>
-				老师登陆页面</legend>
+			<legend>老师登陆页面</legend>
+			<div class="error">
+				<span th:if="${userNotExist}" th:text="${userNotExist}"></span>
+				<span th:if="${passWordError}" th:text="${passWordError}"></span>
+			</div>
 			<form th:object="${teacherLoginInfo}" method="post" th:action="@{/login/confirm}">
 				<label>工号：</label>
 				<input type="text" maxlength="12" minlength="12" placeholder="工号，输入12位数字" th:field="*{teacherId}" required>
