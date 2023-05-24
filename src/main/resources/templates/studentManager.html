@@ -1,55 +1,14 @@
 <html xmlns="http://www.thymeleaf.org">
+<style>
+	.error {
+		color: red;
+	}
+
+</style>
 
 
 <body>
 	<h1>学生管理页</h1>
-	<fieldset>
-		<legend>
-			添加学生
-		</legend>
-		<form th:action="@{/studentInfo/insert/{teacherId}(teacherId=${teacherId})}" th:object="${studentInfo}"
-			method="post">
-			<label>按班级添加:</label>
-			<select th:field="*{className}">
-				<option th:each="class:${canManageClassList}" th:value="${class.className}" th:text="${class.className}">
-			</select>
-			<p />
-			<label>学号:</label>
-			<input type="text" maxlength="12" minlength="12" placeholder="12位数字" th:field="*{studentId}" required>
-			<p />
-			<input type="submit" value="提交">
-		</form>
-	</fieldset>
-
-	<fieldset>
-		<legend>
-			查询学生信息
-		</legend>
-		<form th:action="@{/studentInfo/searchByClassName/{teacherId}(teacherId=${teacherId})}" th:object="${studentInfo}"
-			method="post">
-			<label>按班级查询:</label>
-			<select th:field="*{className}">
-				<option th:each="class:${canManageClassList}" th:value="${class.className}" th:text="${class.className}">
-			</select>
-			<input type="submit">
-		</form>
-		<form th:action="@{/studentInfo/searchByStudentId/{teacherId}(teacherId=${teacherId})}" th:object="${studentInfo}"
-			method="post">
-			<label>按学号查询:</label>
-			<input type="text" maxlength="12" minlength="12" placeholder="12位数字" th:field="*{studentId}" required>
-			<input type="submit">
-		</form>
-		<form th:action="@{/studentInfo/index/{teacherId}(teacherId=${teacherId})}" method="get">
-			<label>查询所有学生:</label>
-			<select>
-				<option value="*">
-					您所能管理班级里的所有学生
-				</option>
-			</select>
-
-			<input type="submit">
-		</form>
-	</fieldset>
 	<fieldset>
 		<legend>
 			查询结果
@@ -59,24 +18,65 @@
 				<th>学号</th>
 				<th>姓名</th>
 				<th>班级</th>
+				<th>系</th>
+				<th>学院</th>
 				<th>删除</th>
 			</tr>
-			<tr th:each="student:${studentList}">
-				<td th:text="${student.studentId}">
+			<tr th:each="s:${showStudentInfo}">
+				<td th:text="${s.studentId}">
+				<td th:text="${s.studentName}">
+				<td th:text="${s.clazz}">
+				<td th:text="${s.faculty}">
+				<td th:text="${s.college}">
 				<td>
-					<span th:if="${student.studentName  == null }">null</span>
-					<span th:unless="${student.studentName == null }" th:text="${student.studentName}">
+					<a th:href="@{/studentInfo/delete(teacherId=${teacherId},studentId=${s.studentId})}">删除</a>
 				</td>
-				<td th:text="${student.className}">
-				<td>
-					<a th:href="@{/studentInfo/delete(studentId=${student.studentId},teacherId=${teacherId})}">删除</a>
-				</td>
+
 			</tr>
 		</table>
 	</fieldset>
-	<a th:href="@{/index/{teacherId}(teacherId=${teacherId})}">
-		返回主页
-	</a>
+
+	<div class="error">
+		<span th:if="${noPower}" th:text="${noPower}"></span>
+		<span th:if="${studentExist}" th:text="${studentExist}"></span>
+	</div>
+	<fieldset>
+		<legend>添加学生</legend>
+		<form th:action="@{/studentInfo/fixTheFaculty(teacherId=${teacherId})}" th:object="${college}" method="post">
+			<label>选择学院</label>
+			<select th:field="*{id}">
+				<option th:each="c:${collegeList}" th:value="${c.id}" th:text="${c.college}">
+				</option>
+			</select>
+			<input type="submit" value="确定">
+		</form>
+		<form th:action="@{/studentInfo/fixTheClazz(teacherId=${teacherId})}" th:object="${faculty}" method="post">
+			<label>选择专业</label>
+			<select th:field="*{id}">
+				<option th:each="f:${facultyList}" th:value="${f.id}" th:text="${f.faculty}">
+			</select>
+			<input type="submit" value="确定">
+		</form>
+		<form th:action="@{/studentInfo/sureTheClazzId(teacherId=${teacherId})}" th:object="${clazz}" method="post">
+			<label>选择班级</label>
+			<select th:field="*{id}">
+				<option th:each="c:${clazzList}" th:value="${c.id}" th:text="${c.clazz}">
+			</select>
+			<input type="submit" value="确定">
+		</form>
+		<form th:action="@{/studentInfo/insertStudent(teacherId=${teacherId},clazzId=${clazzId})}"
+			th:object="${studentInfo}" method="post">
+			<label>学号：</label>
+			<input type="text" maxlength="12" minlength="12" th:field="*{studentId}" placeholder="请输入12位数字" required>
+			<p />
+			<label>姓名：</label>
+			<input type="text" th:field="*{studentName}" placeholder="姓名" required>
+			<p />
+			<input type="submit" value="写入">
+		</form>
+
+	</fieldset>
+	<a th:href="@{/index/{teacherId}(teacherId=${teacherId})}">返回主页</a>
 </body>
 
 </html>

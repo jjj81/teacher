@@ -1,7 +1,10 @@
 package com.zut.teacher.controller;
 
+import com.zut.teacher.entity.Clazz;
+import com.zut.teacher.entity.College;
+import com.zut.teacher.entity.Faculty;
 import com.zut.teacher.entity.StudentInfo;
-import com.zut.teacher.entity.TeacherPowerToClass;
+import com.zut.teacher.mapper.ClazzMapper;
 import com.zut.teacher.mapper.StudentInfoMapper;
 import com.zut.teacher.mapper.TeacherPowerToClassMapper;
 import com.zut.teacher.service.TeacherInfoService;
@@ -30,87 +33,146 @@ public class StudentInfoController {
 	@Autowired
 	private TeacherInfoService teacherInfoService;
 
-	@GetMapping("/index/{teacherId}")
-	String studentInfoManagerPage(@PathVariable("teacherId") String teacherId, Model model) {
+	@Autowired
+	ClazzMapper clazzMapper;
+
+	@PostMapping("/fixTheFaculty")
+	String fixTheFaculty(Model model, @RequestParam("teacherId") String teacherId, final College college) {
+
+		model.addAttribute("collegeList", clazzMapper.selectAllCollege());
+		model.addAttribute("college", new College());
+		model.addAttribute("faculty", new Faculty());
+		model.addAttribute("clazz", new Clazz());
+		model.addAttribute("facultyList", clazzMapper.selectFacultyByParentId(college.getId()));
+
 		model.addAttribute("teacherId", teacherId);
 		model.addAttribute("studentInfo", new StudentInfo());
-		model.addAttribute("canManageClassList", teacherPowerToClassMapper.searchTeacherPowerToClassById(teacherId));
-		model.addAttribute("studentList", teacherInfoService.searchTeacherCanManagerStudentAll(teacherId));
+		model.addAttribute("showStudentInfo",
+				teacherInfoService.showStudentInfo(teacherInfoService.teacherCanManagerStudents(teacherId)));
+
 		return "studentManager";
 	}
 
-	@PostMapping("/insert/{teacherId}")
-	String insertStudent(Model model, final StudentInfo studentInfo, @PathVariable("teacherId") String teacherId) {
-		if (studentInfoMapper.searchStudentByStudentId(studentInfo.getStudentId()) != null) {
+	@PostMapping("fixTheClazz")
+	String fixTheClazz(Model model, @RequestParam("teacherId") String teacherId, final Faculty faculty) {
+		model.addAttribute("teacherId", teacherId);
+		model.addAttribute("college", new College());
+		model.addAttribute("faculty", new Faculty());
+		model.addAttribute("clazz", new Clazz());
+		model.addAttribute("collegeList", clazzMapper.selectAllCollege());
+		model.addAttribute("facultyList",
+				clazzMapper.selectFacultyById(faculty.getId()));
+		model.addAttribute("clazzList", clazzMapper.selectClazzByFacultyId(faculty.getId()));
+
+		model.addAttribute("studentInfo", new StudentInfo());
+
+		model.addAttribute("showStudentInfo",
+				teacherInfoService.showStudentInfo(teacherInfoService.teacherCanManagerStudents(teacherId)));
+
+		return "studentManager";
+	}
+
+	@PostMapping("/sureTheClazzId")
+	String sureTheClazzId(Model model, final Clazz clazz, @RequestParam("teacherId") String teacherId) {
+		if (teacherPowerToClassMapper.searchByTidAndCid(teacherId, clazz.getId()) == null) {
+			model.addAttribute("noPower", "您对该班级没有管理权限，如需管理该班级请向管理员申请");
 			model.addAttribute("teacherId", teacherId);
-			return "studentExist";
+			model.addAttribute("college", new College());
+			model.addAttribute("faculty", new Faculty());
+			model.addAttribute("clazz", new Clazz());
+			model.addAttribute("collegeList", clazzMapper.selectAllCollege());
+			model.addAttribute("studentInfo", new StudentInfo());
+			model.addAttribute("showStudentInfo",
+					teacherInfoService.showStudentInfo(teacherInfoService.teacherCanManagerStudents(teacherId)));
+
+			return "studentManager";
+
+		}
+
+		model.addAttribute("teacherId", teacherId);
+		model.addAttribute("college", new College());
+		model.addAttribute("faculty", new Faculty());
+		model.addAttribute("clazz", new Clazz());
+		model.addAttribute("collegeList", clazzMapper.selectAllCollege());
+		model.addAttribute("clazzId", clazz.getId());
+
+		model.addAttribute("studentInfo", new StudentInfo());
+		model.addAttribute("showStudentInfo",
+				teacherInfoService.showStudentInfo(teacherInfoService.teacherCanManagerStudents(teacherId)));
+
+		return "studentManager";
+	}
+
+	@PostMapping("/insertStudent")
+	String insertStudent(Model model, final StudentInfo studentInfo, @RequestParam("teacherId") String teacherId,
+			@RequestParam("clazzId") Integer clazzId) {
+
+		if (studentInfoMapper.searchStudentByStudentId(studentInfo.getStudentId()) != null) {
+			System.out.println("java");
+			model.addAttribute("studentExist", "该学号在数据库中已有实例，请勿重复添加");
+			model.addAttribute("teacherId", teacherId);
+			model.addAttribute("college", new College());
+			model.addAttribute("faculty", new Faculty());
+			model.addAttribute("clazz", new Clazz());
+			model.addAttribute("collegeList", clazzMapper.selectAllCollege());
+			model.addAttribute("studentInfo", new StudentInfo());
+			model.addAttribute("showStudentInfo",
+					teacherInfoService.showStudentInfo(teacherInfoService.teacherCanManagerStudents(teacherId)));
+
+			return "studentManager";
+
 		}
 		studentInfo.setPassWord(bcrCryptPasswordEncoder.encode(studentInfo.getStudentId()));
+		studentInfo.setClazzId(clazzId);
 		studentInfoMapper.insertStudentInfo(studentInfo);
 
 		model.addAttribute("teacherId", teacherId);
+		model.addAttribute("college", new College());
+		model.addAttribute("faculty", new Faculty());
+		model.addAttribute("clazz", new Clazz());
+		model.addAttribute("collegeList", clazzMapper.selectAllCollege());
 		model.addAttribute("studentInfo", new StudentInfo());
-		model.addAttribute("canManageClassList", teacherPowerToClassMapper.searchTeacherPowerToClassById(teacherId));
-		model.addAttribute("studentList", teacherInfoService.searchTeacherCanManagerStudentAll(teacherId));
+		model.addAttribute("showStudentInfo",
+				teacherInfoService.showStudentInfo(teacherInfoService.teacherCanManagerStudents(teacherId)));
 
 		return "studentManager";
 	}
 
-	@PostMapping("/searchByClassName/{teacherId}")
-	String searchStudentInfoByClassName(final StudentInfo studentInfo, Model model,
-			@PathVariable("teacherId") String teacherId) {
+	@GetMapping("/index/{teacherId}")
+	String studentInfoManagerPage(@PathVariable("teacherId") String teacherId, Model model) {
+
+		model.addAttribute("collegeList", clazzMapper.selectAllCollege());
+		model.addAttribute("college", new College());
+		model.addAttribute("faculty", new Faculty());
+		model.addAttribute("clazz", new Clazz());
 
 		model.addAttribute("teacherId", teacherId);
 		model.addAttribute("studentInfo", new StudentInfo());
-		model.addAttribute("canManageClassList", teacherPowerToClassMapper.searchTeacherPowerToClassById(teacherId));
-		model.addAttribute("studentList", studentInfoMapper.searchStudentByClassName(studentInfo.getClassName()));
+
+		model.addAttribute("showStudentInfo",
+				teacherInfoService.showStudentInfo(teacherInfoService.teacherCanManagerStudents(teacherId)));
 
 		return "studentManager";
-	}
-
-	@PostMapping("/searchByStudentId/{teacherId}")
-	String searchStudentByStudentId(final StudentInfo studentInfo, Model model,
-			@PathVariable("teacherId") String teacherId) {
-
-		if (studentInfoMapper.searchStudentByStudentId(studentInfo.getStudentId()) == null) {
-
-			model.addAttribute("teacherId", teacherId);
-			return "studentNotExist";
-		}
-
-		int flag = 0;
-		for (TeacherPowerToClass teacherPowerToClass : teacherPowerToClassMapper
-				.searchTeacherPowerToClassById(teacherId)) {
-
-			if (studentInfoMapper.searchStudentByStudentId(studentInfo.getStudentId())
-					.getClassName().equals(teacherPowerToClass.getClassName()) == true)
-				flag = 1;
-		}
-		if (flag == 0) {
-			model.addAttribute("teacherId", teacherId);
-			return "noPower";
-		} else {
-
-			model.addAttribute("teacherId", teacherId);
-			model.addAttribute("studentInfo", new StudentInfo());
-			model.addAttribute("canManageClassList",
-					teacherPowerToClassMapper.searchTeacherPowerToClassById(teacherId));
-			model.addAttribute("studentList", studentInfoMapper.searchStudentByStudentId(studentInfo.getStudentId()));
-			return "studentManager";
-		}
 	}
 
 	@GetMapping("/delete")
-	String deleteStudentByStudentId(@RequestParam("studentId") String studentId,
-			@RequestParam("teacherId") String teacherId, Model model) {
-
+	String deleteStudent(Model model, @RequestParam("teacherId") String teacherId,
+			@RequestParam("studentId") String studentId) {
 		studentInfoMapper.deleteStudentByStudentId(studentId);
+
+		model.addAttribute("collegeList", clazzMapper.selectAllCollege());
+		model.addAttribute("college", new College());
+		model.addAttribute("faculty", new Faculty());
+		model.addAttribute("clazz", new Clazz());
+
 		model.addAttribute("teacherId", teacherId);
 		model.addAttribute("studentInfo", new StudentInfo());
-		model.addAttribute("canManageClassList", teacherPowerToClassMapper.searchTeacherPowerToClassById(teacherId));
-		model.addAttribute("studentList", teacherInfoService.searchTeacherCanManagerStudentAll(teacherId));
+
+		model.addAttribute("showStudentInfo",
+				teacherInfoService.showStudentInfo(teacherInfoService.teacherCanManagerStudents(teacherId)));
 
 		return "studentManager";
+
 	}
 
 }

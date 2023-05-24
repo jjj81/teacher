@@ -3,21 +3,32 @@
 <body>
 	<h1>网站刷题情况截图</h1>
 	<fieldset>
-		<label>图1</label>
-		<img th:src="'data:image/png;base64,'+${photo1}" />
-		<p />
-		<label>图2</label>
-		<img th:src="'data:image/png;base64,'+${photo2}" />
-		<p />
-		<label>图3</label>
-		<img th:src="'data:image/png;base64,'+${photo3}" />
-		<p />
-		<label>图4</label>
-		<img th:src="'data:image/png;base64,'+${photo4}" />
-		<p />
-		<label>图5</label>
-		<img th:src="'data:image/png;base64,'+${photo5}" />
-		<p />
+		<fieldset>
+			<legend>截图1</legend>
+
+			<img th:src="'data:image/png;base64,'+${photo1}" />
+		</fieldset>
+		<fieldset>
+			<legend>截图2</legend>
+
+			<img th:src="'data:image/png;base64,'+${photo2}" />
+		</fieldset>
+		<fieldset>
+			<legend>截图3</legend>
+
+			<img th:src="'data:image/png;base64,'+${photo3}" />
+		</fieldset>
+		<fieldset>
+			<legend>截图4</legend>
+
+			<img th:src="'data:image/png;base64,'+${photo4}" />
+		</fieldset>
+		<fieldset>
+			<legend>截图5</legend>
+
+			<img th:src="'data:image/png;base64,'+${photo5}" />
+		</fieldset>
+
 	</fieldset>
 	<a th:href="@{/doExerciseInfo/{studentId}(studentId=${studentId})}">返回</a>
 </body>

@@ -10,4 +10,7 @@ import com.zut.teacher.entity.TeacherPowerToClass;
 public interface TeacherPowerToClassMapper {
 	@Select("select * from teacherPowerToClass where teacherId=#{teacherId}")
 	List<TeacherPowerToClass> searchTeacherPowerToClassById(String teacherId);
+
+	@Select("select * from teacherPowerToClass where teacherId=#{teacherId} and clazzId=#{clazzId}")
+	TeacherPowerToClass searchByTidAndCid(String teacherId, Integer clazzId);
 }

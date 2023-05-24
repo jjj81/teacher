@@ -1,0 +1,32 @@
+<html xmlns="http://www.thymeleaf.org">
+<style>
+
+</style>
+<h1>您所能管理的所有学生的刷题排名</h1>
+<fieldset>
+	<fieldset>
+		<legend>ranking</legend>
+		<table>
+			<tr>
+				<th>学号</th>
+				<th>姓名</th>
+				<th>班级</th>
+				<th>系</th>
+				<th>学院</th>
+				<th>综合得分</th>
+			</tr>
+			<tr th:each="r:${rank}">
+				<td th:text="${r.studentId}">
+				<td th:text="${r.studentName}">
+				<td th:text="${r.clazz}">
+				<td th:text="${r.faculty}">
+				<td th:text="${r.college}">
+				<td th:text="${r.compositeScore}">
+			</tr>
+		</table>
+	</fieldset>
+	<a th:href="@{/index/{teacherId}(teacherId=${teacherId})}">返回主页</a>
+</fieldset>
+
+
+</html>

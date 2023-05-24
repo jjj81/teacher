@@ -26,8 +26,4 @@ public interface TeacherLoginInfoMapper {
 	@Update("update teacherLoginInfo set wantToManageClass=#{leaveMessage} where teacherId=#{teacherId}")
 	void updateLeaveMessageByTeacherId(String teacherId, String leaveMessage);
 
-	// diff
-	@Select("select * from classes")
-	List<String> selectAllClass();
-
 }

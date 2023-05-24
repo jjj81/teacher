@@ -1,0 +1,36 @@
+<html xmlns="http://www.thymeleaf.org">
+
+<body>
+	<fieldset>
+		<fieldset>
+			<legend>search</legend>
+			<table>
+				<tr>
+					<th>标题</th>
+					<th>公告内容</th>
+					<th>删除</th>
+				</tr>
+				<tr th:each="n:${noticeList}">
+					<td th:text="${n.title}">
+					<td th:text="${n.body}">
+					<td>
+						<a th:href="@{/notice/delete(title=${n.title},teacherId=${teacherId})}">删除</a>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+		<fieldset>
+			<legend>insert</legend>
+			<form th:action="@{/notice/insert(teacherId=${teacherId})}" th:object="${notice}" method="post">
+				<textarea th:field="*{title}" placeholder="公告标题" required></textarea>
+				<p />
+				<textarea th:field="*{body}" placeholder="公告内容" required></textarea>
+				<p />
+				<input type="submit" value="提交">
+			</form>
+		</fieldset>
+	</fieldset>
+	<a th:href="@{/index/{teacherId}(teacherId=${teacherId})}">返回主页</a>
+</body>
+
+</html>

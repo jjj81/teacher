@@ -14,8 +14,13 @@
 		<fieldset>
 			<legend>学生刷题情况</legend>
 			<a th:href="@{/doExerciseInfo/{teacherId}(teacherId=${teacherId})}">学生刷题情况</a>
+			<p />
+			<a th:href="@{/rank/{teacherId}(teacherId=${teacherId})}">您能管理的班级的所有学生的刷题排名</a>
 		</fieldset>
-	</fieldset>
+		<fieldset>
+			<legend>公告管理</legend>
+			<a th:href="@{/notice/{teacherId}(teacherId=${teacherId})}">公告</a>
+		</fieldset>
 </body>
 
 </html>

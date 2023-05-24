@@ -3,6 +3,7 @@
 <body>
 	<h1>查询学生刷题情况</h1>
 	<fieldset>
+		<legend>未审核</legend>
 		<table>
 			<tr>
 				<th>学号</th>
@@ -13,9 +14,11 @@
 				<th>结束日期</th>
 				<th>查看刷题情况截图</th>
 				<th>学生刷题情况审核</th>
-				<th>按刷题数排序</th>
+				<th>学生留言</th>
+				<th>教师批注</th>
+				<th>修改批注</th>
 			</tr>
-			<tr th:each="info:${searchAllList}">
+			<tr th:each="info:${notReview}">
 				<td><span th:text="${info.studentId}">null</span></td>
 				<td><a th:href="@{'https://'+${info.doExerciseWebSiteUrl}}" th:text="${info.doExerciseWebSiteUrl}"></a></td>
 				<td><span th:text="${info.doExerciseWebSiteAccount}">null</span></td>
@@ -26,26 +29,236 @@
 						th:href="@{/imageInfo/get(url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount},studentId=${info.studentId})}">查看</a>
 				</td>
 				<td>
-					<select>
-						<option th:value="0">
-							未审核
-						</option>
-						<option th:value="1">
-							审核通过
-						</option>
-						<option th:value="3">
-							审核不通过
-						</option>
-						<option th:value="4">
-							审核不通过
-						</option>
-
-					</select>
+					<form
+						th:action="@{/doExerciseInfo/review(teacherId=${teacherId},url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount})}"
+						th:object="${doExerciseInfo}" method="post">
+						<select th:field="*{review}">
+							<option th:value="0">
+								未审核
+							</option>
+							<option th:value="1">
+								审核通过
+							</option>
+							<option th:value="3">
+								审核不通过
+							</option>
+							<option th:value="4">
+								存疑
+							</option>
+						</select>
+						<input type="submit" value="确定">
+					</form>
 				</td>
-				<td><a th:href="@{/doExerciseInfo/searchAllOrderBySolveExerciseNumber}">排序</a></td>
+
+				<td th:text="${info.studentComment}">
+				<td th:text="${info.teacherComment}">
+				<td>
+					<form
+						th:action="@{/doExerciseInfo/updateComment(teacherId=${teacherId},url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount})}"
+						th:object="${doExerciseInfo}" method="post">
+						<textarea th:field="*{teacherComment}" placeholder="教师批注" />
+						</textarea>
+						<input type="submit" value="修改">
+					</form>
+				</td>
+
 			</tr>
 		</table>
+
 	</fieldset>
+	<fieldset>
+		<legend>审核不通过</legend>
+		<table>
+			<tr>
+				<th>学号</th>
+				<th>刷题网站</th>
+				<th>刷题网站账号</th>
+				<th>解题数量</th>
+				<th>开始刷题日期</th>
+				<th>结束日期</th>
+				<th>查看刷题情况截图</th>
+				<th>学生刷题情况审核</th>
+				<th>学生留言</th>
+				<th>教师批注</th>
+				<th>修改批注</th>
+
+			</tr>
+			<tr th:each="info:${reviewNotPass}">
+				<td><span th:text="${info.studentId}">null</span></td>
+				<td><a th:href="@{'https://'+${info.doExerciseWebSiteUrl}}" th:text="${info.doExerciseWebSiteUrl}"></a></td>
+				<td><span th:text="${info.doExerciseWebSiteAccount}">null</span></td>
+				<td><span th:text="${info.solveExerciseNumber}">null</span></td>
+				<td><span th:text="${info.doExerciseStartTime}">null</span></td>
+				<td><span th:text="${info.doExerciseEndTime}">null</span></td>
+				<td><a
+						th:href="@{/imageInfo/get(url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount},studentId=${info.studentId})}">查看</a>
+				</td>
+				<td>
+					<form
+						th:action="@{/doExerciseInfo/review(teacherId=${teacherId},url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount})}"
+						th:object="${doExerciseInfo}" method="post">
+						<select th:field="*{review}">
+							<option th:value="0">
+								未审核
+							</option>
+							<option th:value="1">
+								审核通过
+							</option>
+							<option th:value="3">
+								审核不通过
+							</option>
+							<option th:value="4">
+								存疑
+							</option>
+						</select>
+						<input type="submit" value="确定">
+					</form>
+				</td>
+				<td th:text="${info.studentComment}">
+				<td th:text="${info.teacherComment}">
+				<td>
+					<form
+						th:action="@{/doExerciseInfo/updateComment(teacherId=${teacherId},url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount})}"
+						th:object="${doExerciseInfo}" method="post">
+						<textarea th:field="*{teacherComment}" placeholder="教师批注" />
+						</textarea>
+						<input type="submit" value="修改">
+					</form>
+				</td>
+
+			</tr>
+		</table>
+
+	</fieldset>
+	<fieldset>
+		<legend>存疑</legend>
+		<table>
+			<tr>
+				<th>学号</th>
+				<th>刷题网站</th>
+				<th>刷题网站账号</th>
+				<th>解题数量</th>
+				<th>开始刷题日期</th>
+				<th>结束日期</th>
+				<th>查看刷题情况截图</th>
+				<th>学生刷题情况审核</th>
+				<th>学生留言</th>
+				<th>教师批注</th>
+				<th>修改批注</th>
+
+			</tr>
+			<tr th:each="info:${doubt}">
+				<td><span th:text="${info.studentId}">null</span></td>
+				<td><a th:href="@{'https://'+${info.doExerciseWebSiteUrl}}" th:text="${info.doExerciseWebSiteUrl}"></a></td>
+				<td><span th:text="${info.doExerciseWebSiteAccount}">null</span></td>
+				<td><span th:text="${info.solveExerciseNumber}">null</span></td>
+				<td><span th:text="${info.doExerciseStartTime}">null</span></td>
+				<td><span th:text="${info.doExerciseEndTime}">null</span></td>
+				<td><a
+						th:href="@{/imageInfo/get(url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount},studentId=${info.studentId})}">查看</a>
+				</td>
+				<td>
+					<form
+						th:action="@{/doExerciseInfo/review(teacherId=${teacherId},url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount})}"
+						th:object="${doExerciseInfo}" method="post">
+						<select th:field="*{review}">
+							<option th:value="0">
+								未审核
+							</option>
+							<option th:value="1">
+								审核通过
+							</option>
+							<option th:value="3">
+								审核不通过
+							</option>
+							<option th:value="4">
+								存疑
+							</option>
+						</select>
+						<input type="submit" value="确定">
+					</form>
+				</td>
+				<td th:text="${info.studentComment}">
+				<td th:text="${info.teacherComment}">
+				<td>
+					<form
+						th:action="@{/doExerciseInfo/updateComment(teacherId=${teacherId},url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount})}"
+						th:object="${doExerciseInfo}" method="post">
+						<textarea th:field="*{teacherComment}" placeholder="教师批注" />
+						</textarea>
+						<input type="submit" value="修改">
+					</form>
+				</td>
+
+			</tr>
+		</table>
+
+	</fieldset>
+	<fieldset>
+		<legend>审核通过</legend>
+		<table>
+			<tr>
+				<th>学号</th>
+				<th>刷题网站</th>
+				<th>刷题网站账号</th>
+				<th>解题数量</th>
+				<th>开始刷题日期</th>
+				<th>结束日期</th>
+				<th>查看刷题情况截图</th>
+				<th>学生刷题情况审核</th>
+				<th>学生留言</th>
+				<th>教师批注</th>
+				<th>修改批注</th>
+
+			</tr>
+			<tr th:each="info:${reviewPass}">
+				<td><span th:text="${info.studentId}">null</span></td>
+				<td><a th:href="@{'https://'+${info.doExerciseWebSiteUrl}}" th:text="${info.doExerciseWebSiteUrl}"></a></td>
+				<td><span th:text="${info.doExerciseWebSiteAccount}">null</span></td>
+				<td><span th:text="${info.solveExerciseNumber}">null</span></td>
+				<td><span th:text="${info.doExerciseStartTime}">null</span></td>
+				<td><span th:text="${info.doExerciseEndTime}">null</span></td>
+				<td><a
+						th:href="@{/imageInfo/get(url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount},studentId=${info.studentId})}">查看</a>
+				</td>
+				<td>
+					<form
+						th:action="@{/doExerciseInfo/review(teacherId=${teacherId},url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount})}"
+						th:object="${doExerciseInfo}" method="post">
+						<select th:field="*{review}">
+							<option th:value="0">
+								未审核
+							</option>
+							<option th:value="1">
+								审核通过
+							</option>
+							<option th:value="3">
+								审核不通过
+							</option>
+							<option th:value="4">
+								存疑
+							</option>
+						</select>
+						<input type="submit" value="确定">
+					</form>
+				</td>
+				<td th:text="${info.studentComment}">
+				<td th:text="${info.teacherComment}">
+				<td>
+					<form
+						th:action="@{/doExerciseInfo/updateComment(teacherId=${teacherId},url=${info.doExerciseWebSiteUrl},account=${info.doExerciseWebSiteAccount})}"
+						th:object="${doExerciseInfo}" method="post">
+						<textarea th:field="*{teacherComment}" placeholder="教师批注" />
+						</textarea>
+						<input type="submit" value="修改">
+					</form>
+				</td>
+
+			</tr>
+		</table>
+
+	</fieldset>
+
 	<a th:href="@{/index/{teacherId}(teacherId=${teacherId})}">返回主页</a>
 </body>
 

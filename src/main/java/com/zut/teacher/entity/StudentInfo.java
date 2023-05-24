@@ -4,8 +4,9 @@ public class StudentInfo {
 
 	private String studentId;
 	private String passWord;
-	private String className;
 	private String StudentName;
+
+	private Integer clazzId;
 
 	public String getStudentId() {
 		return studentId;
@@ -23,20 +24,20 @@ public class StudentInfo {
 		this.passWord = passWord;
 	}
 
-	public String getClassName() {
-		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
-	}
-
 	public String getStudentName() {
 		return StudentName;
 	}
 
 	public void setStudentName(String studentName) {
 		StudentName = studentName;
+	}
+
+	public Integer getClazzId() {
+		return clazzId;
+	}
+
+	public void setClazzId(Integer clazzId) {
+		this.clazzId = clazzId;
 	}
 
 }

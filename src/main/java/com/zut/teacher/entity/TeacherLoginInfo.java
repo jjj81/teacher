@@ -5,6 +5,9 @@ public class TeacherLoginInfo {
 	private String passWord;
 	private String teacherName;
 	private String wantToManageClass;
+	private String adminMessage;
+	private String college;
+	private String faculty;
 
 	public String getPassWord() {
 		return passWord;
@@ -36,6 +39,30 @@ public class TeacherLoginInfo {
 
 	public void setWantToManageClass(String wantToManageClass) {
 		this.wantToManageClass = wantToManageClass;
+	}
+
+	public String getCollege() {
+		return college;
+	}
+
+	public void setCollege(String college) {
+		this.college = college;
+	}
+
+	public String getFaculty() {
+		return faculty;
+	}
+
+	public void setFaculty(String faculty) {
+		this.faculty = faculty;
+	}
+
+	public String getAdminMessage() {
+		return adminMessage;
+	}
+
+	public void setAdminMessage(String adminMessage) {
+		this.adminMessage = adminMessage;
 	}
 
 }

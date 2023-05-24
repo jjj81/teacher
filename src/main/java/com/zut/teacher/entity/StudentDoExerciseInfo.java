@@ -14,6 +14,9 @@ public class StudentDoExerciseInfo {
 	private String doExercisePhoto3;
 	private String doExercisePhoto4;
 	private String doExercisePhoto5;
+	private String review;
+	private String teacherComment;
+	private String studentComment;
 
 	public String getDoExerciseWebSiteUrl() {
 		return doExerciseWebSiteUrl;
@@ -101,6 +104,30 @@ public class StudentDoExerciseInfo {
 
 	public void setDoExercisePhoto5(String doExercisePhoto5) {
 		this.doExercisePhoto5 = doExercisePhoto5;
+	}
+
+	public String getReview() {
+		return review;
+	}
+
+	public void setReview(String review) {
+		this.review = review;
+	}
+
+	public String getTeacherComment() {
+		return teacherComment;
+	}
+
+	public void setTeacherComment(String teacherComment) {
+		this.teacherComment = teacherComment;
+	}
+
+	public String getStudentComment() {
+		return studentComment;
+	}
+
+	public void setStudentComment(String studentComment) {
+		this.studentComment = studentComment;
 	}
 
 }
